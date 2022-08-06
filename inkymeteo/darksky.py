@@ -18,8 +18,8 @@ class MeteoAgent:
 
 
 
-    def _get_weather(self):
-        coords = get_coords(address)
+    def _get_weather(self, adress):
+        coords = self.get_coords(address)
         weather = {}
         res = requests.get("https://darksky.net/forecast/{}/uk212/en".format(",".join([str(c) for c in coords])))
         if res.status_code == 200:

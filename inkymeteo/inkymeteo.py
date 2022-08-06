@@ -59,6 +59,10 @@ inky_display.set_border(inky_display.BLACK)
 
 # Details to customise your weather display
 
+
+
+
+
 CITY = "Sheffield"
 COUNTRYCODE = "GB"
 WARNING_TEMP = 25.0
