@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from xml.dom.expatbuilder import theDOMImplementation
 import requests
 import geocoder
 from bs4 import BeautifulSoup
@@ -20,7 +21,8 @@ class MeteoAgent:
     def _get_weather(self, address):
         coords = self.get_coords(address)
         weather = {}
-        res = requests.get("https://darksky.net/forecast/{}/uk212/en".format(",".join([str(c) for c in coords])))
+        url = f"https://darksky.net/forecast/{(','.join([str(c) for c in coords]))}/uk212/en"
+        res = requests.get(url=url)
         if res.status_code == 200:
             soup = BeautifulSoup(res.content, "lxml")
             curr = soup.find_all("span", "currently")
@@ -30,6 +32,17 @@ class MeteoAgent:
             weather["pressure"] = int(press[0].find("span", "num").text)
             weather["uv"] = soup.find("span", "uv__index__value").text          
             print(weather)
+
+            soup = BeautifulSoup(res.content, "html.parser")
+            forecast = soup.select('a[data-day="1"]')[0]
+            tempMin = forecast.select('span[class="minTemp"]')[0].text
+            tempMax = forecast.select('span[class="maxTemp"]')[0].text
+            print(f"tomorrow: max: {tempMax} min: {tempMin} ")
+            breakpoint()
+
+
+
+
             return weather
         else:
             return weather
