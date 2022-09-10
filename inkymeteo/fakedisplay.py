@@ -4,11 +4,16 @@ from PIL import Image, ImageDraw, ImageFont
 
 import os
 
+#from inkymeteo.inkymeteo.darksky import MeteoAgent
+from darksky import MeteoAgent
+
 
 class Display:
 
     def __init__(self):
-        image = self.create_new_inky_image()
+        self.image = self.create_new_inky_image()
+        meteo_agent = MeteoAgent("Montpellier")
+
 
 
     def create_new_inky_image(self):
@@ -17,17 +22,28 @@ class Display:
         #inky_display = auto(ask_user=True, verbose=True)
         #w, h = inky_display.resolution
         #inky_display.set_border(inky_display.BLACK)
-
-        
         #image = Image.open(os.path.join(PATH, "resources/backdrop.png")).resize(250,122)
         image = Image.new('RGB', (250, 122), color = 'black')
-        #breakpoint()
         # draw object
         draw = ImageDraw.Draw(image)
-        #draw.line((69, 36, 69, 81))
         draw.line((0, 31, 250, 31))
         draw.line((166,0, 166, 122))      # Vertical line
+        self.weather_icon_on_image(image_source=image)
         image.save("coucou.png")
+
+    def weather_icon_on_image(self, image_source):
+    # image open
+        img = Image.open("resources/icon-sun.png")
+        img.resize(size=(100, 100))
+        # image resize
+        # image paste
+        image_source.paste(img, (0, 32)) # need to copy it on the mask
+
+
+
+
+
+
         
 
 if __name__ == "__main__":
